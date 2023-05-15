@@ -1,0 +1,3 @@
+rootProject.name = 'recommend_food'
+
+include 'user-api'
