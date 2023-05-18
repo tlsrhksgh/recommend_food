@@ -1,0 +1,26 @@
+package com.single.user.controller;
+
+import com.single.user.application.SignUpApplication;
+import com.single.user.domain.member.SignUpForm;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RequestMapping("/member")
+@RequiredArgsConstructor
+@RestController
+public class MemberController {
+
+    private final SignUpApplication signUpApplication;
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> memberSignUp(@RequestBody SignUpForm form) {
+        return ResponseEntity.ok(signUpApplication.memberSignUp(form));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyMember(String email, String code) {
+        signUpApplication.memberVerify(email, code);
+        return ResponseEntity.ok("인증이 완료 되었습니다.");
+    }
+}
