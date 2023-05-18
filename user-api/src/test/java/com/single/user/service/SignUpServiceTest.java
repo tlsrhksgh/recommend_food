@@ -11,15 +11,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SignUpServiceTest {
@@ -31,8 +38,10 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("회원가입 성공")
+
     void registerMemberSuccess() {
         //given
+    public void registerMemberSuccess() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -43,10 +52,13 @@ class SignUpServiceTest {
         given(memberRepository.save(any()))
                 .willReturn(Member.from(form));
 
-        //when
         Member member = signUpService.signUp(form);
 
-        //then
+        when(memberRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(memberRepository.save(any(Member.class))).thenReturn(Member.from(form));
+
+        Member member = signUpService.signUp(form);
+
         assertEquals(member.getName(), "test");
         assertEquals(member.getPhone(), "010-1111-1234");
         assertEquals(member.getEmail(), "test@naver.com");
@@ -78,6 +90,8 @@ class SignUpServiceTest {
     @DisplayName("메일 체크 시 중복되는 메일 없음")
     void isEmailExist_withExistingEmail_shouldReturnTrue() {
         //given
+    @DisplayName("중복된 계정으로 인한 실패")
+    public void alreadyRegisterMember() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -184,5 +198,9 @@ class SignUpServiceTest {
         assertThrows(MemberException.class, () -> signUpService.verifyEmail(member.getEmail(), code));
         assertFalse(member.isVerify());
         verify(memberRepository, times(1)).findByEmail(member.getEmail());
+
+        when(memberRepository.findByEmail(anyString())).thenReturn(Optional.of(Member.from(form)));
+
+        assertThrows(MemberException.class, () -> signUpService.signUp(form));
     }
 }

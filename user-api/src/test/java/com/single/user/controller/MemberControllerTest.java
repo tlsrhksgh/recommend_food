@@ -3,6 +3,9 @@ package com.single.user.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.single.user.application.SignUpApplication;
 import com.single.user.domain.member.SignUpForm;
+import com.single.user.domain.member.SignUpForm;
+import com.single.user.domain.model.Member;
+import com.single.user.service.SignUpService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,6 +20,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -36,6 +42,10 @@ class MemberControllerTest {
 
     @Test
     void successSignUp() throws Exception {
+    private SignUpService signUpService;
+
+    @Test
+    public void successSignUp() throws Exception {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -45,6 +55,8 @@ class MemberControllerTest {
 
         given(signUpApplication.memberSignUp(any()))
                 .willReturn("회원 가입에 성공 하였습니다.");
+        given(signUpService.signUp(any()))
+                .willReturn(Member.from(form));
 
         mockMvc.perform(post("/member/signup")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,5 +80,7 @@ class MemberControllerTest {
                 .andExpect(content().string("인증이 완료 되었습니다."))
                 .andDo(print());
         verify(signUpApplication, times(1)).memberVerify(email, code);
+                .andExpect(content().string("회원가입에 성공 하였습니다!"))
+                .andDo(print());
     }
 }

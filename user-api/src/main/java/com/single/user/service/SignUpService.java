@@ -1,5 +1,6 @@
 package com.single.user.service;
 
+import com.single.user.domain.member.SignInForm;
 import com.single.user.domain.member.SignUpForm;
 import com.single.user.domain.model.Member;
 import com.single.user.domain.repository.MemberRepository;
@@ -26,6 +27,15 @@ public class SignUpService {
 
     public boolean isEmailExist(String email) {
         return memberRepository.findByEmail(email.toLowerCase(Locale.ROOT)).isPresent();
+    }
+
+    public Member signIn(SignInForm form) {
+        Optional<Member> member = memberRepository.findByEmail(form.getEmail().toLowerCase(Locale.ROOT));
+        if (member.isPresent()) {
+            throw new MemberException(MEMBER_NOT_FOUND);
+        }
+
+        return null;
     }
 
     @Transactional
