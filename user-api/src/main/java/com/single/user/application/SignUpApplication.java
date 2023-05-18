@@ -37,7 +37,9 @@ public class SignUpApplication {
                     .build();
 
             mailgunClient.sendEmail(mailForm);
+            member.setVerifyExpiredAt(signUpService.changeMemberValidateStatus(member.getId(), verifyCode));
             signUpService.changeMemberValidateStatus(member.getId(), verifyCode);
+
             return "회원 가입에 성공하였습니다.";
         }
     }

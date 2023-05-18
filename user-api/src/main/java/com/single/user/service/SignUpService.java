@@ -57,7 +57,7 @@ public class SignUpService {
     public LocalDateTime changeMemberValidateStatus(Long memberId, String verificationCode) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
 
-        if(!optionalMember.isPresent()) {
+        if(optionalMember.isEmpty()) {
             throw new MemberException(MEMBER_NOT_FOUND);
         }
 
