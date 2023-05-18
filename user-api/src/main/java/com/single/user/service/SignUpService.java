@@ -1,6 +1,5 @@
 package com.single.user.service;
 
-import com.single.user.domain.member.SignInForm;
 import com.single.user.domain.member.SignUpForm;
 import com.single.user.domain.model.Member;
 import com.single.user.domain.repository.MemberRepository;
@@ -29,15 +28,6 @@ public class SignUpService {
         return memberRepository.findByEmail(email.toLowerCase(Locale.ROOT)).isPresent();
     }
 
-    public Member signIn(SignInForm form) {
-        Optional<Member> member = memberRepository.findByEmail(form.getEmail().toLowerCase(Locale.ROOT));
-        if (member.isPresent()) {
-            throw new MemberException(MEMBER_NOT_FOUND);
-        }
-
-        return null;
-    }
-
     @Transactional
     public void verifyEmail(String email, String code) {
         Member member = memberRepository.findByEmail(email)
@@ -57,7 +47,7 @@ public class SignUpService {
     public LocalDateTime changeMemberValidateStatus(Long memberId, String verificationCode) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
 
-        if(!optionalMember.isPresent()) {
+        if(optionalMember.isEmpty()) {
             throw new MemberException(MEMBER_NOT_FOUND);
         }
 
