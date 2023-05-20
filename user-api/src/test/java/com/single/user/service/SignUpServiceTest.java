@@ -12,9 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 import java.util.Optional;
 
+import static com.single.user.exception.ErrorCode.EXPIRE_VERIFICATION_CODE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,8 +31,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("회원가입 성공")
-    void registerMemberSuccess() {
-        //given
+    public void registerMemberSuccess() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -46,10 +45,10 @@ class SignUpServiceTest {
         //when
         Member member = signUpService.signUp(form);
 
-        //then
         assertEquals(member.getName(), "test");
         assertEquals(member.getPhone(), "010-1111-1234");
         assertEquals(member.getEmail(), "test@naver.com");
+        verify(memberRepository, times(1)).save(any());
     }
 
     @Test
@@ -75,9 +74,8 @@ class SignUpServiceTest {
     }
 
     @Test
-    @DisplayName("메일 체크 시 중복되는 메일 없음")
-    void isEmailExist_withExistingEmail_shouldReturnTrue() {
-        //given
+    @DisplayName("중복된 계정으로 인한 실패")
+    public void alreadyRegisterMember() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -180,8 +178,12 @@ class SignUpServiceTest {
                 .willReturn(Optional.of(member));
 
         //when
+        Exception exception = assertThrows(MemberException.class, () -> {
+            signUpService.verifyEmail(member.getEmail(), code);
+        });
+
         //then
-        assertThrows(MemberException.class, () -> signUpService.verifyEmail(member.getEmail(), code));
+        assertEquals(EXPIRE_VERIFICATION_CODE.getContent(), exception.getMessage());
         assertFalse(member.isVerify());
         verify(memberRepository, times(1)).findByEmail(member.getEmail());
     }
