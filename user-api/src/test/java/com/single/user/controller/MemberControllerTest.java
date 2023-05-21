@@ -76,4 +76,9 @@ class MemberControllerTest {
                 .andDo(print());
         verify(signUpApplication, times(1)).memberVerify(email, code);
     }
+
+    @Test
+    void successSignIn() {
+
+    }
 }

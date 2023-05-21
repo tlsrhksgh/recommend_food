@@ -14,8 +14,8 @@ public class SignInApplication {
     private final JwtAuthenticationProvider jwtProvider;
 
     public String MemberLoginToken(SignInForm form) {
-        Member member = memberService.findValidCustomer(form.getEmail(), form.getPassword());
+        Member member = memberService.findValidMember(form.getEmail(), form.getPassword());
 
-        return jwtProvider.createToken(form.getEmail());
+        return member != null ? jwtProvider.createToken(form.getEmail()) : "존재하지 않는 회원입니다";
     }
 }

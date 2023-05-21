@@ -20,13 +20,13 @@ public class MemberService {
         return memberRepository.findByEmail(email);
     }
 
-    public Member findValidCustomer(String email, String password) {
+    public Member findValidMember(String email, String password) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-        if(!member.getEmail().equals(email) && member.isVerify()) {
+        if(!member.getEmail().equals(email)) {
             throw new MemberException(LOGIN_MAIL_CHECK_FAIL);
-        } else if(!member.getPassword().equals(password) && member.isVerify()) {
+        } else if(!member.getPassword().equals(password)) {
             throw new MemberException(LOGIN_PASSWORD_CECK_FAIL);
         } else if(member.getEmail().equals(email) && member.getPassword().equals(password) && !member.isVerify()) {
             throw new MemberException(NOT_VERIFIED_EMAIL_CODE);
