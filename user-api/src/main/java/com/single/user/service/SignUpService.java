@@ -45,13 +45,9 @@ public class SignUpService {
 
     @Transactional
     public LocalDateTime changeMemberValidateStatus(Long memberId, String verificationCode) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(MEMBER_NOT_FOUND));
 
-        if(optionalMember.isEmpty()) {
-            throw new MemberException(MEMBER_NOT_FOUND);
-        }
-
-        Member member = optionalMember.get();
         member.setVerificationCode(verificationCode);
         member.setVerifyExpiredAt(LocalDateTime.now().plusDays(1));
 

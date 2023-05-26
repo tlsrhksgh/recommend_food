@@ -37,7 +37,7 @@ class SignUpApplicationTest {
 
     @Test
     @DisplayName("Service verifyEmail 메서드 호출 성공")
-    void memberVerify_CallVerifyEmail() {
+    void testMemberVerify_CallVerifyEmail() {
         // given
         String email = "test@example.com";
         String code = "1234";
@@ -51,7 +51,7 @@ class SignUpApplicationTest {
 
     @Test
     @DisplayName("중복된 사용자 계정으로 인한 회원 가입 실패")
-    void alreadyMember_SignUp_Failed() {
+    void testMemberSignUp_alreadyMember_SignUp_Failed() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@test.com")
@@ -73,7 +73,7 @@ class SignUpApplicationTest {
 
     @Test
     @DisplayName("회원가입 성공")
-    void memberSignUp_Success() {
+    void testMemberSignUp_MemberRegister_Success() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@test.com")

@@ -8,14 +8,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
 
-
 public class JwtAuthenticationProvider {
     private String secretKey = "akldgjekrlgjewrgjidfvjlzkcvadsfqewgqergwgvewrkjgkldsfjgkljewrigjwerogjiewgjiewrogjsdklvjwei";
 
     private long tokenValidTime = 1000L * 60 * 60 * 24;
 
-    public String createToken(String userPk) {
-        Claims claims = Jwts.claims().setSubject(Aes256Util.encrypt(userPk));
+    public String createToken(String userId) {
+        Claims claims = Jwts.claims().setSubject(Aes256Util.encrypt(userId));
 
         Date now = new Date();
 

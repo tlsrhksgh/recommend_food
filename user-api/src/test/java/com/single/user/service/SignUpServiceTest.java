@@ -31,7 +31,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("회원가입 성공")
-    public void registerMemberSuccess() {
+    public void testSignUp_registerMemberSuccess() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -53,7 +53,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("중복된 계정 체크")
-    void exist_EmailCheck() {
+    void testIsEmailExist_exist_EmailCheck() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
@@ -75,7 +75,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("중복된 계정으로 인한 실패")
-    public void alreadyRegisterMember() {
+    public void testVerifyEmail_alreadyRegisterMember() {
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
                 .name("test")
@@ -94,7 +94,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("가입된 사용자를 찾을 수 없음")
-    void userNotFound() {
+    void testVerifyEmail_userNotFound() {
         //given
         String email = "test@test.com";
         String code = "1234";
@@ -110,7 +110,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("이미 인증된 사용자 이메일로 인한 인증 실패")
-    void alreadyVerify_Member() {
+    void testVerifyEmail_alreadyVerify_Member() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
@@ -135,7 +135,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("인증 코드 불일치")
-    void wrong_VerificationCode() {
+    void testVerifyEmail_wrong_VerificationCode() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
@@ -160,7 +160,7 @@ class SignUpServiceTest {
 
     @Test
     @DisplayName("날짜가 만료된 코드 인증 실패")
-    void expired_VerificationCode() {
+    void testVerifyEmail_expired_VerificationCode() {
         //given
         SignUpForm form = SignUpForm.builder()
                 .email("test@naver.com")
@@ -186,5 +186,48 @@ class SignUpServiceTest {
         assertEquals(EXPIRE_VERIFICATION_CODE.getContent(), exception.getMessage());
         assertFalse(member.isVerify());
         verify(memberRepository, times(1)).findByEmail(member.getEmail());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 사용자로 에러 발생")
+    void testChangeMemberValidateStatus_NonExistMember() {
+        //given
+        given(memberRepository.findById(1L))
+                .willReturn(Optional.empty());
+
+        //when
+        //then
+        assertThrows(MemberException.class, () -> signUpService.changeMemberValidateStatus(1L, "1234"));
+        verify(memberRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("사용자 인증 메일 기한과 인증 코드 DB속성 변경")
+    void testChangeMEmberValidateStatus_ChangeEmailValidDateAndValidCode() {
+        //given
+        SignUpForm form = SignUpForm.builder()
+                .email("test@naver.com")
+                .name("test")
+                .phone("010-1111-1234")
+                .password("test")
+                .build();
+
+        String code = "1234";
+        LocalDateTime validExpiredAt = LocalDateTime.now().plusDays(1);
+
+        Member member = Member.from(form);
+        member.setId(1L);
+        member.setVerificationCode(code);
+        member.setVerifyExpiredAt(LocalDateTime.now().plusDays(1));
+
+        given(memberRepository.findById(member.getId()))
+                .willReturn(Optional.of(member));
+
+        //when
+        LocalDateTime date = signUpService.changeMemberValidateStatus(1L, code);
+
+        //then
+        assertEquals(date, member.getVerifyExpiredAt());
+        assertEquals(code, member.getVerificationCode());
     }
 }
