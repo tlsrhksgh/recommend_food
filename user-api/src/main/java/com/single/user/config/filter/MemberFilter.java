@@ -26,6 +26,17 @@ public class MemberFilter implements Filter {
         String userPk = jwtProvider.getUserPk(token);
         memberService.findByEmail(userPk)
                 .orElseThrow(() -> new ServletException("Invalid user info"));
+
+        System.out.println(this.getClientIP(req));
+
         chain.doFilter(request, response);
+    }
+
+    private String getClientIP(HttpServletRequest request) {
+        if(request == null) {
+            return "";
+        }
+
+        return request.getHeader("X-Forwarded-For");
     }
 }

@@ -28,7 +28,7 @@ public class MemberService {
             throw new MemberException(LOGIN_MAIL_CHECK_FAIL);
         } else if(!member.getPassword().equals(password)) {
             throw new MemberException(LOGIN_PASSWORD_CECK_FAIL);
-        } else if(member.getEmail().equals(email) && member.getPassword().equals(password) && !member.isVerify()) {
+        } else if(!member.isVerify()) {
             throw new MemberException(NOT_VERIFIED_EMAIL_CODE);
         }
 
