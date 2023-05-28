@@ -1,3 +1,4 @@
 rootProject.name = 'recommend_food'
 
 include 'user-api'
+include 'food-api'
