@@ -1,10 +1,5 @@
-package com.single.user.client.mailgun;
+package com.single.common.mail_client;
 
-import lombok.Builder;
-import lombok.Getter;
-
-@Getter
-@Builder
 public class SendMailForm {
     private String from;
     private String to;
