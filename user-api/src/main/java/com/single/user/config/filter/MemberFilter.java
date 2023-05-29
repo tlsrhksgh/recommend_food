@@ -1,6 +1,6 @@
 package com.single.user.config.filter;
 
-import com.single.user.config.JwtAuthenticationProvider;
+import com.single.common.jwt.config.JwtAuthenticationProvider;
 import com.single.user.service.MemberService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;

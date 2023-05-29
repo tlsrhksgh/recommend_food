@@ -1,7 +1,7 @@
 package com.single.user.application;
 
+import com.single.user.client.SendMailForm;
 import com.single.user.client.mailgun.MailgunClient;
-import com.single.user.client.mailgun.SendMailForm;
 import com.single.user.domain.member.SignUpForm;
 import com.single.user.domain.model.Member;
 import com.single.user.exception.ErrorCode;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class SignUpApplication {
+
     private final MailgunClient mailgunClient;
     private final SignUpService signUpService;
 
@@ -37,6 +38,7 @@ public class SignUpApplication {
                     .build();
 
             mailgunClient.sendEmail(mailForm);
+
             member.setVerifyExpiredAt(signUpService.changeMemberValidateStatus(member.getId(), verifyCode));
             signUpService.changeMemberValidateStatus(member.getId(), verifyCode);
             return "회원 가입에 성공하였습니다.";
