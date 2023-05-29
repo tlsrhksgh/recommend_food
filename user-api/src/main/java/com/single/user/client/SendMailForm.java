@@ -1,4 +1,4 @@
-package com.single.common.mail_client;
+package com.single.user.client;
 
 public class SendMailForm {
     private String from;
