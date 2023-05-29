@@ -1,4 +1,4 @@
-package com.single.user.config;
+package com.single.common.jwt.config;
 
 import com.single.user.util.Aes256Util;
 import io.jsonwebtoken.Claims;

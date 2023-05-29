@@ -1,4 +1,4 @@
-package com.single.user.util;
+package com.single.common.jwt.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
