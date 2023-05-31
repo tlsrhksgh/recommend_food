@@ -1,5 +1,5 @@
 rootProject.name = 'recommend_food'
 
+include 'common'
 include 'user-api'
 include 'food-api'
-include 'common'

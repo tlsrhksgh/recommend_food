@@ -1,10 +1,8 @@
 package com.single.user.application;
 
-import com.single.user.config.JwtAuthenticationProvider;
+import com.single.common.jwt.config.JwtAuthenticationProvider;
 import com.single.user.domain.member.SignInForm;
 import com.single.user.domain.model.Member;
-import com.single.user.exception.ErrorCode;
-import com.single.user.exception.MemberException;
 import com.single.user.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,10 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.single.user.exception.ErrorCode.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 

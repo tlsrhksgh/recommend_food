@@ -1,6 +1,6 @@
 package com.single.common.jwt.config;
 
-import com.single.user.util.Aes256Util;
+import com.single.common.jwt.util.Aes256Util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
