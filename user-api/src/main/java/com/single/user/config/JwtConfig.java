@@ -1,5 +1,6 @@
 package com.single.user.config;
 
+import com.single.common.jwt.config.JwtAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

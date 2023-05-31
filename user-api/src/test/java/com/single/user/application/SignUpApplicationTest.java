@@ -1,7 +1,7 @@
 package com.single.user.application;
 
+import com.single.user.client.SendMailForm;
 import com.single.user.client.mailgun.MailgunClient;
-import com.single.user.client.mailgun.SendMailForm;
 import com.single.user.domain.member.SignUpForm;
 import com.single.user.domain.model.Member;
 import com.single.user.exception.MemberException;

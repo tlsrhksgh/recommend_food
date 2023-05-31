@@ -2,7 +2,6 @@ package com.single.user.controller;
 
 import com.single.user.application.SignInApplication;
 import com.single.user.application.SignUpApplication;
-import com.single.user.config.JwtAuthenticationProvider;
 import com.single.user.domain.member.SignInForm;
 import com.single.user.domain.member.SignUpForm;
 import lombok.RequiredArgsConstructor;

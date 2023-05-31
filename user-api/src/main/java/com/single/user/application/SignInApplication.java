@@ -1,6 +1,6 @@
 package com.single.user.application;
 
-import com.single.user.config.JwtAuthenticationProvider;
+import com.single.common.jwt.config.JwtAuthenticationProvider;
 import com.single.user.domain.member.SignInForm;
 import com.single.user.domain.model.Member;
 import com.single.user.service.MemberService;
